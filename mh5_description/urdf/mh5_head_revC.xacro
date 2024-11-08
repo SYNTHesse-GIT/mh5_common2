@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find mh5_description)/urdf/mh5_transmission.xacro"/>
+
+    <xacro:macro name="mh5_head" params="parent">
+
+        <joint name="head_y" type="revolute">
+            <axis xyz="-1 0 0"/>
+            <parent link="${parent}"/>
+            <child link="head_servo"/>
+            <origin xyz="-0.007076 0 ${0.191046+0.019}" rpy="0 ${pi/2} 0"/>
+            <limit lower="-${pi/2}" upper="${pi/2}" effort="1.0" velocity="${2*pi}"/>
+        </joint>
+        <xacro:insert_transmission name="head_y"/>
+
+        <link name="head_servo">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/2XL430_1_idle_revC.stl"/>
+                </geometry>
+                <xacro:material_black/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/2XL430_1_idle_revC.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.098"/>
+                <inertia
+                    ixx="0.000026983"
+                    iyy="0.000026983"
+                    izz="0.000019139"
+                    ixy="0.000000654"
+                    ixz="-0.000000001"
+                    iyz="0.000000002" />
+            </inertial>
+        </link>
+
+        <joint name="head_p" type="revolute">
+            <axis xyz="0 -1 0"/>
+            <parent link="head_servo"/>
+            <child link="head_frame"/>
+            <origin xyz="0 0 -0.024" rpy="0 -${pi/2} 0"/>
+            <limit lower="-${pi/9}" upper="${pi/4}" effort="1.0" velocity="${2*pi}"/>
+        </joint>
+        <xacro:insert_transmission name="head_p"/>
+
+        <link name="head_frame">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/head_revC.stl"/>
+                </geometry>
+                <xacro:material_ivory/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/head_revC.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.090046"/>
+                <inertia
+                    ixx="0.000188152"
+                    iyy="0.000158702"
+                    izz="0.000215838"
+                    ixy="0.000000008"
+                    ixz="-0.000000404"
+                    iyz="-0.000000005" />
+            </inertial>
+        </link>
+
+        <joint name="left_camera_fixed" type="fixed">
+            <parent link="head_frame"/>
+            <child link="left_camera"/>
+            <origin xyz="0.05715 0.030 -0.009196" rpy="0 0 0"/>
+        </joint>
+
+        <link name="left_camera">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/camera_revC.stl"/>
+                </geometry>
+                <xacro:material_black/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/camera_revC.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.004582"/>
+                <inertia
+                    ixx="0.000000405"
+                    iyy="0.000000374"
+                    izz="0.000000314"
+                    ixy="-0.000000001"
+                    ixz="-0.000000034"
+                    iyz="-0.000000003" />
+            </inertial>
+        </link>
+
+        <joint name="right_camera_fixed" type="fixed">
+            <parent link="head_frame"/>
+            <child link="right_camera"/>
+            <origin xyz="0.05715 -0.030 -0.009196" rpy="0 0 0"/>
+        </joint>
+
+        <link name="right_camera">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/camera_revC.stl"/>
+                </geometry>
+                <xacro:material_black/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/camera_revC.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.004582"/>
+                <inertia
+                    ixx="0.000000405"
+                    iyy="0.000000374"
+                    izz="0.000000314"
+                    ixy="-0.000000001"
+                    ixz="-0.000000034"
+                    iyz="-0.000000003" />
+            </inertial>
+        </link>
+
+    </xacro:macro>
+
+</robot>

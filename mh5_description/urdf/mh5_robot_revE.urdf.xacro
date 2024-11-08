@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="mh5_robot">
+
+    <xacro:include filename="$(find mh5_description)/urdf/mh5_head_revC.xacro"/>
+    <xacro:include filename="$(find mh5_description)/urdf/mh5_arm_revE.xacro"/>
+    <xacro:include filename="$(find mh5_description)/urdf/mh5_leg_revE.xacro"/>
+
+    <xacro:macro name="material_ivory">
+        <material name="ivory">
+            <color rgba="1 1 0.94 1"/>
+        </material>
+    </xacro:macro>
+
+    <xacro:macro name="material_black">
+        <material name="black">
+            <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+    </xacro:macro>
+
+    <link name="base_link"/>
+
+    <link name="chest">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://mh5_description/meshes/chest_revE.stl"/>
+            </geometry>
+            <xacro:material_ivory/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://mh5_description/meshes/chest_revE.stl"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.139810"/>
+            <inertia
+                ixx="0.000416293"
+                iyy="0.000348572"
+                izz="0.000198378"
+                ixy="0.000000012"
+                ixz="0.000012260"
+                iyz="0.000000017" />
+        </inertial>
+    </link>
+
+    <joint name="chest_fixed" type="fixed">
+        <parent link="base_link"/>
+        <child link="chest"/>
+        <origin xyz="0 0 0.203" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:mh5_head parent="chest" />
+    <xacro:mh5_arm side="left" parent="chest" />
+    <xacro:mh5_arm side="right" parent="chest" />
+    <xacro:mh5_leg side="left" parent="chest" />
+    <xacro:mh5_leg side="right" parent="chest" />
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/mh5_robot</robotNamespace>
+        </plugin>
+
+        <!-- <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+            <jointName>
+                head_p, head_y,
+                l_hip_p, l_hip_r, l_kne_p, l_kne_y, l_ank_p, l_ank_r,
+                r_hip_p, r_hip_r, r_kne_p, r_kne_y, r_ank_p, r_ank_r 
+            </jointName>
+            <updateRate>25</updateRate>
+        </plugin> -->
+    </gazebo>
+
+</robot>
