@@ -1,0 +1,199 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="mh5_arm" params="side parent">
+
+        <xacro:property name="short_side" value="${side[0]}"/>
+        <xacro:if value="${short_side == 'l'}">
+            <xacro:property name="factor" value = "1.0"/>
+        </xacro:if>
+        <xacro:if value="${short_side == 'r'}">
+            <xacro:property name="factor" value = "-1.0"/>
+        </xacro:if>
+
+        <xacro:property name="effort" value="1.0"/>
+        <xacro:property name="velocity" value="${2*pi}"/>
+
+
+        <joint name="${short_side}_sho_p" type="revolute">
+            <axis xyz="0 0 ${factor}"/>
+            <parent link="${parent}"/>
+            <child link="${side}_shoulder_frame"/>
+            <origin xyz="0 ${factor*0.0685} 0.11875" rpy="${factor*pi/2} ${-pi/2} 0 "/>
+            <!-- <origin xyz="0 0 0.019" rpy="0 ${pi} ${pi/2 - factor*pi/2}"/> -->
+            <limit lower="-${pi/2}" upper="${pi}" effort="${effort}" velocity="${velocity}"/>
+        </joint>
+        <xacro:insert_transmission name="${short_side}_sho_p"/>
+
+        <link name="${side}_shoulder_frame">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/frame04_revE.stl"/>
+                </geometry>
+                <material name="ivory"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/frame04_revE.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.0083"/>
+                <inertia
+                    ixx="0.000003285"
+                    iyy="0.000001666"
+                    izz="0.000003578"
+                    ixy="0.000000000"
+                    ixz="-0.000000402"
+                    iyz="0.000000000" />
+            </inertial>
+        </link>
+
+        <joint name="${short_side}_sho_r" type="revolute">
+            <axis xyz="${factor} 0 0"/>
+            <parent link="${side}_shoulder_frame"/>
+            <child link="${side}_upper_arm"/>
+            <origin xyz="-0.008 0 -0.027" rpy="${-factor*pi/2} 0 ${-factor*pi/2}"/>
+            <!-- <origin xyz="0 ${-factor*0.016} -0.027" rpy="0 ${pi/2} ${pi/2 - factor*pi/2}"/> -->
+            <limit lower="0" upper="${pi}" effort="${effort}" velocity="${velocity}"/>
+        </joint>
+        <xacro:insert_transmission name="${short_side}_sho_r"/>
+
+        <link name="${side}_upper_arm">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/upper_arm.dae"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/upper_arm.dae"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.115"/>
+                <inertia
+                    ixx="0.000089448"
+                    iyy="0.000092555"
+                    izz="0.000017800"
+                    ixy="0.000000000"
+                    ixz="0.000000000"
+                    iyz="0.000000036" />
+            </inertial>
+        </link>
+
+        <joint name="${short_side}_elb_r" type="revolute">
+            <axis xyz="0 0 ${factor}"/>
+            <parent link="${side}_upper_arm"/>
+            <child link="${side}_elbow_frame"/>
+            <origin xyz="0.019 0 -0.0705" rpy="0 ${-pi/2} 0"/>
+            <limit lower="${-pi/2}" upper="${pi/2}" effort="${effort}" velocity="${velocity}"/>
+        </joint>
+        <xacro:insert_transmission name="${short_side}_elb_y"/>
+
+        <link name="${side}_elbow_frame">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/frame02_revC.stl"/>
+                </geometry>
+                <xacro:material_ivory/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/frame02_revC.stl"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <mass value="0.0077"/>
+                <inertia
+                    ixx="0.000003217"
+                    iyy="0.000001377"
+                    izz="0.000002781"
+                    ixy="0.000000000"
+                    ixz="-0.000000011"
+                    iyz="0.000000000" />
+            </inertial>
+        </link>
+
+        <joint name="${short_side}_elb_p" type="revolute">
+            <axis xyz="0 -1 0"/>
+            <parent link="${side}_elbow_frame"/>
+            <child link="${side}_lower_arm"/>
+            <origin xyz="0 0 -0.034" rpy="0 ${pi/2} 0"/>
+            <limit lower="${-0.6*pi}" upper="${0.6*pi}" effort="${effort}" velocity="${velocity}"/>
+        </joint>
+        <xacro:insert_transmission name="${short_side}_elb_p"/>
+
+        <link name="${side}_lower_arm">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/${side}_lower_arm.dae"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/${side}_lower_arm.dae"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.057"/>
+                <inertia
+                    ixx="0.000013720"
+                    iyy="0.000015234"
+                    izz="0.000008769"
+                    ixy="0.000000007"
+                    ixz="-0.000000355"
+                    iyz="0.000000006" />
+            </inertial>
+        </link>
+
+        <joint name="${short_side}_gripper" type="revolute">
+            <axis xyz="0 0 ${factor}"/>
+            <parent link="${side}_lower_arm"/>
+            <child link="${side}_gripper"/>
+            <origin xyz="0.06575 0 0" rpy="0 0 0"/>
+            <limit lower="0" upper="${pi/2}" effort="${effort}" velocity="${velocity}"/>
+        </joint>
+        <xacro:insert_transmission name="${short_side}_gripper"/>
+
+        <link name="${side}_gripper">
+            <visual>
+                <origin rpy="${pi/2+factor*pi/2} 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/gripper.dae"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/gripper.dae"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.004"/>
+                <inertia
+                    ixx="0.000000750"
+                    iyy="0.000001252"
+                    izz="0.000000794"
+                    ixy="0.000000067"
+                    ixz="0.000000000"
+                    iyz="0.000000000" />
+            </inertial>
+        </link>
+
+
+    </xacro:macro>
+
+</robot>

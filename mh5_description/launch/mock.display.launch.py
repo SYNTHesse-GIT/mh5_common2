@@ -8,7 +8,7 @@ from ament_index_python.packages import get_package_share_path
 def generate_launch_description():
 
     urdf_path = os.path.join(get_package_share_path('mh5_description'),
-                             'urdf', 'mh5_robot_revE.urdf.xacro')
+                             'urdf', 'mh5_robot_revH.urdf.xacro')
     rviz_config_path = os.path.join(get_package_share_path('mh5_description'),
                                     'rviz', 'urdf_config.rviz')
     
