@@ -213,36 +213,36 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://mh5_description/meshes/foot_${side}_revE.stl"/>
+                    <mesh filename="package://mh5_description/meshes/foot_revH.dae"/>
                 </geometry>
                 <xacro:material_ivory/>
             </visual>
             <collision>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://mh5_description/meshes/foot_${side}_revE.stl"/>
+                    <mesh filename="package://mh5_description/meshes/foot_revH.dae"/>
                 </geometry>
             </collision>
             <inertial>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
-                <mass value="0.053"/>
+                <mass value="0.038"/>
                 <inertia
-                    ixx="0.000027639"
-                    iyy="0.000067044"
-                    izz="0.000083497"
-                    ixy="-0.000000056"
-                    ixz="0.000001332"
-                    iyz="0.0000000012" />
+                    ixx="0.000006451"
+                    iyy="0.000022262"
+                    izz="0.000026598"
+                    ixy="0.000000000"
+                    ixz="0.000000341"
+                    iyz="0.000000000" />
             </inertial>
         </link>
 
-        <joint name="${side}_battery_fixed" type="fixed">
+        <!-- <joint name="${side}_battery_fixed" type="fixed">
             <parent link="${side}_foot"/>
             <child link="${side}_battery"/>
             <origin xyz="0.015 ${factor*0.009} -0.037" rpy="0 0 0"/>
-        </joint>
+        </joint> -->
 
-        <link name="${side}_battery">
+        <!-- <link name="${side}_battery">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -269,15 +269,15 @@
                     ixz="0.000000000"
                     iyz="0.000000000" />
             </inertial>
-        </link>
+        </link> -->
 
-        <joint name="${side}_sole_fixed" type="fixed">
+        <!-- <joint name="${side}_sole_fixed" type="fixed">
             <parent link="${side}_foot"/>
             <child link="${side}_landing"/>
             <origin xyz="0.0 0.0 -0.03825" rpy="0 0 0"/>
-        </joint>
+        </joint> -->
 
-        <link name="${side}_landing" />
+        <!-- <link name="${side}_landing" /> -->
 
     </xacro:macro>
 

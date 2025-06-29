@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find mh5_description)/urdf/mh5_transmission.xacro"/>
+
+    <xacro:macro name="mh5_chest" params="parent">
+
+        <link name="chest">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/chest_revH.dae"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://mh5_description/meshes/chest_revH.dae"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.400"/>
+                <inertia
+                    ixx="0.000954830"
+                    iyy="0.000597536"
+                    izz="0.000637274"
+                    ixy="-0.000001668"
+                    ixz="-0.000021416"
+                    iyz="0.000000148" />
+            </inertial>
+        </link>
+
+        <joint name="chest_fixed" type="fixed">
+            <parent link="${parent}"/>
+            <child link="chest"/>
+            <origin xyz="0 0 0.203" rpy="0 0 0"/>
+        </joint>
+
+    </xacro:macro>
+
+</robot>
