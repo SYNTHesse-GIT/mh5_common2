@@ -30,7 +30,7 @@
             </inertial>
         </link>
 
-        <joint name="chest_fixed" type="fixed">
+        <joint name="chest_fixed" type="floating">
             <parent link="${parent}"/>
             <child link="chest"/>
             <origin xyz="0 0 0.203" rpy="0 0 0"/>
